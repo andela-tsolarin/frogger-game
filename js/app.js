@@ -30,8 +30,13 @@ Enemy.prototype.update = function(dt) {
     if (this.x > C_WIDTH)
         this.initialize();
 
-
-    hitTest(this);
+    // If enemy hits player
+    if (hitTest(this)) {
+      // Reduce player life by 1
+      player.removeLife();
+      // Reset player to original position
+      player.resetPosition();
+    }
 }
 
 // Draw the enemy on the screen, required method for game
@@ -46,40 +51,23 @@ Enemy.prototype.initialize = function() {
 
     this.x = Math.random() * (-CHAR_WIDTH + 100) - 100;
     this.y = enemyPositions[parseInt(Math.random() * (enemyPositions.length - 0) + 0)];
-    this.speed = Math.random() * (350 - 100) + 100;
+    this.speed = Math.random() * (350 - 100) + 100 + (player.score * 5);
 }
 
 // Check if enemy hits player
 var hitTest = function(enemy) {
 
-    var playerBounds = {
+    // Check if both enemy and player are on similar vertical positions
+    if (((enemy.y <= player.y) && (enemy.y + CHAR_HEIGHT >= (player.y + 130)))
+      || ((player.y <= enemy.y) && (player.y + CHAR_HEIGHT >= (enemy.y + 130)))) {
 
-        leftTop: {
-            x: player.x,
-            y: player.y
-        },
+      // Check if both enemy and player are on similar horizontal positions
+      if ((enemy.x + CHAR_WIDTH > player.x + 50 && enemy.x < player.x + CHAR_WIDTH - 50)) {
+        return true;
+      }
+    }
 
-        rightBottom: {
-            x: player.x + CHAR_WIDTH,
-            y: player.y + CHAR_HEIGHT,
-        }
-    };
-
-    var enemyBounds = {
-
-        leftTop: {
-            x: enemy.x,
-            y: enemy.y
-        },
-
-        rightBottom: {
-            x: enemy.x + CHAR_WIDTH,
-            y: enemy.y + CHAR_HEIGHT,
-        }
-    };
-
-    
-    
+    return;
 }
 
 // Now write your own player class
@@ -91,6 +79,8 @@ function Player() {
     this.sprite = 'images/char-boy.png';
     this.lives = 5;
     this.score = 0;
+    this.delay = 0;
+    this.isScored = false;
 
     this.x = (C_WIDTH / 2) - (CHAR_WIDTH / 2);
     this.y = C_HEIGHT - (CHAR_HEIGHT + 50);
@@ -98,11 +88,36 @@ function Player() {
 
 Player.prototype.update = function() {
 
+  if (player.y <= 0) {
+    
+    if (!player.isScored) {
+      player.score += 1;
+      player.isScored = true;
+    }
+
+    player.delay += 1;
+
+    if(player.delay == 15)
+      player.resetPosition();
+  }
+  document.getElementById('lives').innerText = player.lives;
+  document.getElementById('points').innerText = player.score;
 }
 
 Player.prototype.render = function() {
 
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Player.prototype.removeLife = function() {
+  this.lives -= 1;
+}
+
+Player.prototype.resetPosition = function() {
+  this.x = (C_WIDTH / 2) - (CHAR_WIDTH / 2);
+  this.y = C_HEIGHT - (CHAR_HEIGHT + 50);
+  this.delay = 0;
+  this.isScored = false;
 }
 
 Player.prototype.handleInput = function(key) {
