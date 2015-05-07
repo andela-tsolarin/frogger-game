@@ -1,3 +1,32 @@
+@font-face {
+     font-family: Kraash;
+     src: url('fonts/Kraash.ttf');
+ }
+
 body {
     text-align: center;
+    background: url('../images/34.jpg');
+    font-family: Kraash;
+    color: darkgoldenrod;
+}
+
+.right {
+  position: fixed;
+  right: 190px;
+  margin-top: 125px;
+  font-size: 25px;
+  text-align: left;
+  line-height: 25px;
+}
+
+#paused {
+  position: fixed;
+  left: 38%;
+  top: 250px;
+  font-size: 30px;
+  display: none;
+}
+
+canvas {
+  margin-top: -55px;
 }

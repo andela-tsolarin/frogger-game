@@ -6,6 +6,15 @@ var CHAR_HEIGHT = 171;
 var C_HEIGHT = 606;
 var C_WIDTH = 505;
 
+// Create game object to handle game actions independent of player or enemy
+var Game = function() {
+  this.isPaused = false;
+}
+
+Game.prototype.toggleState = function() {
+  this.isPaused = !(this.isPaused);
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -93,6 +102,7 @@ Player.prototype.update = function() {
     if (!player.isScored) {
       player.score += 1;
       player.isScored = true;
+      player.lives = (player.score % 10 == 0) ? player.lives + 1 : player.lives;
     }
 
     player.delay += 1;
@@ -100,6 +110,7 @@ Player.prototype.update = function() {
     if(player.delay == 15)
       player.resetPosition();
   }
+
   document.getElementById('lives').innerText = player.lives;
   document.getElementById('points').innerText = player.score;
 }
@@ -122,21 +133,25 @@ Player.prototype.resetPosition = function() {
 
 Player.prototype.handleInput = function(key) {
 
-    if (key == 'up' && (this.y - Y_STEP) > -80)
+    if (key == 'up' && (this.y - Y_STEP) > -80 && !(game.isPaused))
         this.y = this.y - Y_STEP;
-    else if (key == 'down' && (this.y + Y_STEP) < (C_HEIGHT - CHAR_HEIGHT))
+    else if (key == 'down' && (this.y + Y_STEP) < (C_HEIGHT - CHAR_HEIGHT) && !(game.isPaused))
         this.y = this.y + Y_STEP;
-    else if (key == 'left' && (this.x - X_STEP) > 0)
+    else if (key == 'left' && (this.x - X_STEP) > 0 && !(game.isPaused))
         this.x = this.x - X_STEP;
-    else if (key == 'right' && (this.x + X_STEP) < 500)
+    else if (key == 'right' && (this.x + X_STEP) < 500 && !(game.isPaused))
         this.x = this.x + X_STEP;
+    else if (key == 'space')
+        game.toggleState();
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// Instantiate Game object
 var allEnemies = [];
 var player = new Player();
+var game = new Game();
 
 for (var i = 0; i < 5; i++) {
     var enemy = new Enemy();
@@ -148,6 +163,7 @@ for (var i = 0; i < 5; i++) {
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+        32: 'space',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -155,4 +171,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+
 });
