@@ -12,19 +12,43 @@ body {
 
 .right {
   position: fixed;
-  right: 190px;
+  right: 185px;
   margin-top: 125px;
   font-size: 25px;
   text-align: left;
   line-height: 25px;
 }
 
-#paused {
+.left {
+  position: fixed;
+  left: 200px;
+  bottom: 100px;
+  font-size: 25px;
+  text-align: left;
+  line-height: 25px;
+}
+
+  .left button {
+    padding: 5px;
+    font-family: Kraash;
+    background: cornflowerblue;
+    border: 1px solid #eeee00;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+
+#paused, #game-over {
   position: fixed;
   left: 38%;
   top: 250px;
   font-size: 30px;
-  display: none;
+}
+
+#game-over {
+  left: 33%;
+  font-size: 30px;
 }
 
 canvas {

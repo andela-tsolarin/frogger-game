@@ -1,0 +1,30 @@
+body {
+  font-family: 'Segoe UI';
+}
+
+#content {
+  padding-top: 40px;
+  text-align: center;
+}
+
+  #content p.header {
+    font-size: 36px;
+    color: maroon;
+  }
+
+  #content input[type=text], input[type=number] {
+    font-family: 'Segoe UI Light';
+    font-size: 18px;
+    padding: 3px;
+  }
+
+  #content input[type=button] {
+    margin-top: 5px;
+    font-family: 'Segoe UI Light';
+    font-size: 18px;
+    padding: 3px;
+  }
+
+  #content ul {
+    list-style-type: none;
+  }

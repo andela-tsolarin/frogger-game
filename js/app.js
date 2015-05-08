@@ -6,13 +6,35 @@ var CHAR_HEIGHT = 171;
 var C_HEIGHT = 606;
 var C_WIDTH = 505;
 
+
+document.getElementById('again').addEventListener('click', function() {
+  game.reset();
+});
+
 // Create game object to handle game actions independent of player or enemy
 var Game = function() {
   this.isPaused = false;
+  this.isOver = false;
 }
 
 Game.prototype.toggleState = function() {
   this.isPaused = !(this.isPaused);
+  document.getElementById('paused').style.visibility = (this.isPaused) ? 'visible' : 'hidden';
+}
+
+Game.prototype.gameOver = function() {
+  this.isOver = true;
+  document.getElementById('game-over').style.visibility = 'visible';
+  document.getElementById('again').style.visibility = 'visible';
+}
+
+Game.prototype.reset = function() {
+  player.resetPosition();
+  player.lives = 5;
+  player.score = 0;
+  this.isOver = false;
+  document.getElementById('game-over').style.visibility = 'hidden';
+  document.getElementById('again').style.visibility = 'hidden';
 }
 
 // Enemies our player must avoid
@@ -102,12 +124,12 @@ Player.prototype.update = function() {
     if (!player.isScored) {
       player.score += 1;
       player.isScored = true;
-      player.lives = (player.score % 10 == 0) ? player.lives + 1 : player.lives;
+      player.lives = (player.score % 5 == 0) ? player.lives + 1 : player.lives;
     }
 
     player.delay += 1;
 
-    if(player.delay == 15)
+    if (player.delay == 20)
       player.resetPosition();
   }
 
@@ -122,6 +144,8 @@ Player.prototype.render = function() {
 
 Player.prototype.removeLife = function() {
   this.lives -= 1;
+  if (this.lives == 0)
+    game.gameOver();
 }
 
 Player.prototype.resetPosition = function() {
@@ -170,6 +194,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    if (game.isOver == false)
+      player.handleInput(allowedKeys[e.keyCode]);
 
 });
