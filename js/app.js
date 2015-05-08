@@ -7,10 +7,6 @@ var C_HEIGHT = 606;
 var C_WIDTH = 505;
 
 
-document.getElementById('again').addEventListener('click', function() {
-  game.reset();
-});
-
 // Create game object to handle game actions independent of player or enemy
 var Game = function() {
   this.isPaused = false;
@@ -198,4 +194,9 @@ document.addEventListener('keyup', function(e) {
     if (game.isOver == false)
       player.handleInput(allowedKeys[e.keyCode]);
 
+});
+
+
+document.getElementById('again').addEventListener('click', function() {
+  game.reset();
 });
