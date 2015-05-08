@@ -3,6 +3,7 @@
 <head>
     <title>What's Bugging You?</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modal.css">
 </head>
 <body>
 
@@ -21,8 +22,25 @@
     </div>
     <div class="left">
       <button id="again">Play Again</button><br/>
-      <button id="how-to" style="margin-left: -15px; margin-top: 5px;">How To Play</button>
+      <button id="how-to" style="margin-left: -15px; margin-top: 5px;"><a href="#modal">How To Play</a></button>
     </div>
+
+    <div id="modal">
+    <div class="modal-content">
+      <div class="header">
+        <h2>How To Play</h2>
+      </div>
+      <div class="copy">
+        <p>Get to the other side of the road without allowing a bug to eat him. Use the direction keys to move and 'space' to pause. The game ends when you have no life left.</p>
+        <p>You loose one life when you collide with a bug and every five points adds a new life</p>
+      </div>
+      <div class="cf footer">
+        <a href="#" class="btn">Close</a>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </div>
+  <audio id="success_sound" src="sound/level.wav"></audio>
 
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>

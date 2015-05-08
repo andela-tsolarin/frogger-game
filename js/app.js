@@ -125,6 +125,7 @@ Player.prototype.update = function() {
       player.score += 1;
       player.isScored = true;
       player.lives = (player.score % 5 == 0) ? player.lives + 1 : player.lives;
+      document.getElementById('success_sound').play();
     }
 
     player.delay += 1;

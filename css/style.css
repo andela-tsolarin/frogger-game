@@ -39,6 +39,11 @@ body {
     cursor: pointer;
   }
 
+    .left button a {
+    text-decoration: none;
+    color: inherit;
+  }
+
 #paused, #game-over {
   position: fixed;
   left: 38%;
