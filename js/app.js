@@ -7,6 +7,13 @@ var C_HEIGHT = 606;
 var C_WIDTH = 505;
 
 
+var pausedLabel = document.getElementById('paused');
+var gameOverLabel = document.getElementById('game-over');
+var againButton = document.getElementById('again');
+var successSound = document.getElementById('success_sound');
+var livesLabel = document.getElementById('lives');
+var pointsLabel = document.getElementById('points');
+
 // Create game object to handle game actions independent of player or enemy
 var Game = function() {
   this.isPaused = false;
@@ -15,13 +22,13 @@ var Game = function() {
 
 Game.prototype.toggleState = function() {
   this.isPaused = !(this.isPaused);
-  document.getElementById('paused').style.visibility = (this.isPaused) ? 'visible' : 'hidden';
+  pausedLabel.style.visibility = (this.isPaused) ? 'visible' : 'hidden';
 }
 
 Game.prototype.gameOver = function() {
   this.isOver = true;
-  document.getElementById('game-over').style.visibility = 'visible';
-  document.getElementById('again').style.visibility = 'visible';
+  gameOverLabel.style.visibility = 'visible';
+  againButton.style.visibility = 'visible';
 }
 
 Game.prototype.reset = function() {
@@ -29,8 +36,8 @@ Game.prototype.reset = function() {
   player.lives = 5;
   player.score = 0;
   this.isOver = false;
-  document.getElementById('game-over').style.visibility = 'hidden';
-  document.getElementById('again').style.visibility = 'hidden';
+  gameOverLabel.style.visibility = 'hidden';
+  againButton.style.visibility = 'hidden';
 }
 
 // Enemies our player must avoid
@@ -46,8 +53,8 @@ var Enemy = function() {
     this.speed = 0;
 }
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/*Update the enemy's position, required method for game
+Parameter: dt, a time delta between ticks*/
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -97,9 +104,9 @@ var hitTest = function(enemy) {
     return;
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/*Now write your own player class
+This class requires an update(), render() and
+a handleInput() method.*/
 
 function Player() {
 
@@ -121,7 +128,7 @@ Player.prototype.update = function() {
       player.score += 1;
       player.isScored = true;
       player.lives = (player.score % 5 == 0) ? player.lives + 1 : player.lives;
-      document.getElementById('success_sound').play();
+      successSound.play();
     }
 
     player.delay += 1;
@@ -130,8 +137,8 @@ Player.prototype.update = function() {
       player.resetPosition();
   }
 
-  document.getElementById('lives').innerText = player.lives;
-  document.getElementById('points').innerText = player.score;
+  livesLabel.innerText = player.lives;
+  pointsLabel.innerText = player.score;
 }
 
 Player.prototype.render = function() {
@@ -166,10 +173,10 @@ Player.prototype.handleInput = function(key) {
         game.toggleState();
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-// Instantiate Game object
+/*Now instantiate your objects.
+Place all enemy objects in an array called allEnemies
+Place the player object in a variable called player
+Instantiate Game object*/
 var allEnemies = [];
 var player = new Player();
 var game = new Game();
@@ -180,8 +187,8 @@ for (var i = 0; i < 5; i++) {
     allEnemies.push(enemy);
 }
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+/*This listens for key presses and sends the keys to your
+Player.handleInput() method. You don't need to modify this.*/
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         32: 'space',
@@ -197,6 +204,6 @@ document.addEventListener('keyup', function(e) {
 });
 
 
-document.getElementById('again').addEventListener('click', function() {
+againButton.addEventListener('click', function() {
   game.reset();
 });

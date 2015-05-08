@@ -28,9 +28,10 @@ var Engine = (function(global) {
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-    document.getElementById('paused').style.visibility = 'hidden';
-    document.getElementById('game-over').style.visibility = 'hidden';
-    document.getElementById('again').style.visibility = 'hidden';
+    
+    pausedLabel.style.visibility = 'hidden';
+    gameOverLabel.style.visibility = 'hidden';
+    againButton.style.visibility = 'hidden';
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
